@@ -1,0 +1,84 @@
+Content-type: text/html
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FS061</TITLE>
+</HEAD><BODY>
+<H1>FS061</H1>
+Section: User Commands  (1)<BR>Updated: 10 Février 2013<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+FS061 - Programme qui affiche les caractéristiques des partitions primaires d'un disque en précisant si ces partitions sont bootables et vérifier que la signature de boot est présente.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<BR>
+
+<B>FS061</B>
+
+chemin du device
+<BR>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>FS061</B>
+
+ouvre et lit les 512 premiers bytes d'un disque(ou clef usb) en placant les informations brutes dans une structure représentative de celle du MBR.
+Le MBR (Master Boot Record) sert à booter la machine. Au démarrage de la machine, c'est le BIOS qui va le lire et l'exécuter. Le premier bloc de la partition bootable(bloc de boot) doit être mis à 128 (80h) par convention (7ième bit allumé) sinon il ne sera pas considéré comme bootable. C'est ce bloc qui charge le système d'exploitation contenu dans sa partition.
+On retrouve à la fin du secteur(au byte 510 du MBR) le &quot;magic number&quot; qui doit être 0XAA55h par convention. Il permet au BIOS de le voir et le considérer comme potentiellement bootable, et celui-ci charge alors le code d'amorçage à l'adresse 0x7C00h.
+<P>
+
+On retrouve aussi dans l'entrée d'une table de partition l'adresse absolue du premier secteur de la partition (CHS - Cylindre Tête Secteur). La taille de chaque élément CHS, le type de partition (sur 1 byte, ex: pour les partitions EXT on retrouve 83h), et l'adresse absolue du dernier secteur (CHS aussi). On retrouve sur la fin des autres attributs CHS, une adresse LBA (Adressage par bloc logique) permettant de sélectionner de manière unique un secteur (bien qu'il soit possible de faire une conversion CHS/LBA). 
+<BR>
+
+Finallement, il y a un entier désignant le nombre de secteurs de la partitions. Etant donné que la taille standard d'un secteur est de 512b il est facile de trouver la taille de la partition. Un entier peut donner une taille de partition maximale de 2 TB, ce problème devra être contourné par une méthode non-standard (GUID partition table). Linux conseil pour les grande partition 
+<B>parted</B>
+
+au lieu de 
+<B>fdisk.</B>
+
+<P>
+
+Sous linux il est possible de créer des partitions avec une section MBR à l'aide du programme
+<B>fdisk</B>
+
+, il est aussi possible de voir quel device est inséré à l'aide la commande 
+<B>dmesg</B>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>Exemple</H2>
+
+<B>sudo FS061</B>
+
+/dev/sdb1
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<B>FS061</B>
+
+à été modifié par Vandycke Michaël sur base du code d'exemple du labo système HEB-ESI.
+<BR>
+
+<A HREF="mailto:michael@soscomputel.eu">michael@soscomputel.eu</A> 
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">Exemple</A><DD>
+<DT><A HREF="#lbAF">AUTEUR</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 08:00:58 GMT, February 19, 2013
+</BODY>
+</HTML>

@@ -1,0 +1,54 @@
+#!/bin/bash
+clear
+C='\033[44m'
+E='\033[32m\033[1m'
+W='\033[31m\033[1m'
+N='\033[0m'
+
+echo "Exercice 061 - Vandycke Michael G32646"
+echo "Attention ce script manipule les devices!"
+read
+echo "Veuillez insérer une clef usb, attendez 10 secondes et appuyez sur ENTER, entrez par la suite le chemin du device (ex: /dev/sdb) qui sera affiché par dmesg"
+read
+dmesg | tail
+echo -n -e "${E}Entrez le chemin >${N}"
+read chemin
+echo -e "Vous avez choisi:${E} $chemin${N}"
+read
+echo "$chemin va être formaté en EXT2"
+echo ""
+read
+sudo mkfs.ext2 $chemin
+echo ""
+echo -e "${C}Appuyez sur ENTER pour continuer${N}"
+read 
+echo -e "Le script va maintenant à l'aide de fdisk faire 2 partitions en EXT2 dont la deuxième sera bootable"
+echo -e "${C}Appuyez sur ENTER pour continuer${N}"
+read
+cat <<EOF | sudo fdisk $chemin
+n
+p
+1
+2048
+20000
+t
+83
+n
+p
+2
+20001
+100000
+t
+2
+83
+a
+2
+w
+EOF
+echo
+echo
+echo -e "${E}Affichage des caractérisitques des partitions, marqueur et signature de boot${N}"
+read
+sudo ./FS061 $chemin
+echo -e "${C}Appuyez sur ENTER pour terminer${N}"
+read

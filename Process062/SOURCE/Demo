@@ -1,0 +1,27 @@
+#!/bin/bash
+#NOM    : Demo
+#CLASSE : Process - Process062
+#OBJET  : réservé au makefile
+#AUTEUR	: J.C. Jaumain, 07/2011
+
+C='\033[44m'
+E='\033[32m\033[1m'
+N='\033[0m'
+
+clear
+echo -e "Démonstration du shell avec la commande ${E}alias coucou=cat Process062.c${N}"
+echo "-----------------------------------------------"
+echo -e "${C}             --> Enter pour continuer${N}"; read
+echo
+./Process062 <<EOF
+alias coucou=cat Process062.c
+coucou
+exit
+EOF
+echo -e "${C}             --> Enter pour continuer${N}"; read
+clear
+echo -e "Démonstration libre du shell (${E}exit${N} pour terminer)"
+echo "-------------------------------------------------"
+echo
+./Process062
+
